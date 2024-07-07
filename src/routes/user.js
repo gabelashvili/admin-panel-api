@@ -15,8 +15,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage,
-  limits: { fileSize: 3000000 }, // 1MB file size limit
-}).single('avatar'); // 'myFile' is the name attribute of the file input field
+  limits: { fileSize: 3000000 },
+}).single('avatar');
 
 const router = express.Router();
 
