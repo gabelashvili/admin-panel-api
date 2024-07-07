@@ -15,6 +15,10 @@ const PlayerSchema = new mongoose.Schema(
       min: 1,
       max: 5,
     },
+    blocked: {
+      type: Boolean,
+      default: false,
+    },
     lastVisitDate: {
       type: Date,
       required: true,

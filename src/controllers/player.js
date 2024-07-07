@@ -23,7 +23,7 @@ const getPlayers = expressAsyncHandler(async (req, res, next) => {
   return res.status(200).json({ message: 'OK', data: { players, totalCount } });
 });
 
-// @desc    Get plyaer
+// @desc    Get player
 // @route   GET /api/players/:playerId
 // @access  Private
 const getPlayer = expressAsyncHandler(async (req, res, next) => {

@@ -11,6 +11,7 @@ export function createRandomUser() {
     userName: faker.internet.userName(),
     level: faker.number.int({ min: 1, max: 5 }),
     lastVisitDate: faker.date.past(),
+    blocked: false,
   };
 }
 
