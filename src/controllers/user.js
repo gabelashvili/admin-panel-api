@@ -2,6 +2,7 @@ import expressAsyncHandler from 'express-async-handler';
 import UserModel from '../models/user.js';
 import { UnauthorizedError } from '../middleware/check-auth.js';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 // @desc    Sign up user
 // @route   POST /api/users/sign-up
@@ -45,6 +46,21 @@ const getAuthedUser = expressAsyncHandler(async (req, res, next) => {
 // @route   POST /api/users/me
 // @access  Private
 const updateAuthedUser = expressAsyncHandler(async (req, res, next) => {
+  const user = await UserModel.findById(req.authedUser._id).select('password');
+
+  if (req.body.newPassword) {
+    const isValid = await user.validatePassword(req.body.currentPassword);
+    if (!isValid) {
+      throw new Error('validationError');
+    }
+    const salt = await bcrypt.genSalt(Number(process.env.BCRYPT_SALT_ROUNDS));
+    const hashedPassword = await bcrypt.hash(req.body.newPassword, salt);
+    req.body.password = hashedPassword;
+    delete req.body.newPassword;
+    delete req.body.repeatNewPassword;
+    delete req.body.currentPassword;
+  }
+
   await UserModel.findByIdAndUpdate(
     req.authedUser._id,
     {
