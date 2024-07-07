@@ -13,7 +13,8 @@ const getPlayers = expressAsyncHandler(async (req, res, next) => {
     $or: [{ userName: { $regex: searchRgx, $options: 'i' } }],
   })
     .skip(pageSize * page)
-    .limit(pageSize);
+    .limit(pageSize)
+    .sort({ [req.query.sortBy || 'userName']: req.query.sortDir === 'asc' ? 1 : -1 });
 
   const totalCount = await PlayerModel.countDocuments({
     $or: [{ userName: { $regex: searchRgx, $options: 'i' } }],
