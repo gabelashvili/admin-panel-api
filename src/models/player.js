@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import TransactionModel from './transaction.js';
+import BetModel from './bet.js';
 
 const PlayerSchema = new mongoose.Schema(
   {
@@ -39,14 +40,20 @@ PlayerSchema.virtual('transactions', {
   foreignField: 'playerId',
 });
 
+PlayerSchema.virtual('bets', {
+  ref: BetModel,
+  localField: '_id',
+  foreignField: 'playerId',
+});
+
 PlayerSchema.virtual('totalBetAmount', {
-  ref: TransactionModel,
+  ref: BetModel,
   localField: '_id',
   foreignField: 'playerId',
 }).get((item) => item?.reduce((acc, cur) => acc + cur.amount, 0));
 
 PlayerSchema.virtual('totalWinAmount', {
-  ref: TransactionModel,
+  ref: BetModel,
   localField: '_id',
   foreignField: 'playerId',
 }).get((item) => item?.reduce((acc, cur) => acc + cur.win, 0));

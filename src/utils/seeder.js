@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import PlayerModel from '../models/player.js';
 import mongoose from 'mongoose';
 import TransactionModel from '../models/transaction.js';
+import BetModel from '../models/bet.js';
 
 dotenv.config();
 
@@ -26,6 +27,15 @@ export function createRandomTransaction(playerId) {
   };
 }
 
+export function createRandomBet(playerId) {
+  return {
+    amount: faker.number.int({ min: 1, max: 2326598 }),
+    win: faker.number.int({ min: 0, max: 2326598 }),
+    playerId,
+    createdAt: faker.date.past(),
+  };
+}
+
 export const players = faker.helpers.multiple(createRandomUser, {
   count: 80,
 });
@@ -37,7 +47,11 @@ mongoose
     const transactions = data
       .map((el) => faker.helpers.multiple(() => createRandomTransaction(el._id), { count: faker.number.int({ min: 1, max: 30 }) }))
       .flat();
+    const bets = data
+      .map((el) => faker.helpers.multiple(() => createRandomBet(el._id), { count: faker.number.int({ min: 1, max: 30 }) }))
+      .flat();
     await TransactionModel.insertMany(transactions);
+    await BetModel.insertMany(bets);
     console.log('Seeder succeed...');
     process.exit(1);
   })

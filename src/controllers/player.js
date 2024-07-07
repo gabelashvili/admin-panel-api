@@ -27,7 +27,7 @@ const getPlayers = expressAsyncHandler(async (req, res, next) => {
 // @route   GET /api/players/:playerId
 // @access  Private
 const getPlayer = expressAsyncHandler(async (req, res, next) => {
-  const player = await PlayerModel.findById(req.params.playerId).populate('transactions totalBetAmount totalWinAmount');
+  const player = await PlayerModel.findById(req.params.playerId).populate('transactions totalBetAmount totalWinAmount bets');
   if (!player) {
     throw new Error('notFound');
   }
