@@ -22,6 +22,10 @@ const PlayerSchema = new mongoose.Schema(
       min: 1,
       max: 5,
     },
+    lastVisitDate: {
+      type: Date,
+      required: true,
+    },
   },
   {
     timestamps: true,

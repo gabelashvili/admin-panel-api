@@ -11,6 +11,7 @@ export function createRandomUser() {
     totalBet: faker.number.int({ min: 0, max: 2554899 }),
     totalWin: faker.number.int({ min: 0, max: 1554899 }),
     level: faker.number.int({ min: 1, max: 5 }),
+    lastVisitDate: faker.date.past(),
   };
 }
 
