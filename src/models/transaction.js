@@ -6,6 +6,10 @@ const TransactionsSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    win: {
+      type: Number,
+      required: true,
+    },
     type: {
       type: String,
       enum: ['income', 'outcome'],

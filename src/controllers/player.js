@@ -14,7 +14,8 @@ const getPlayers = expressAsyncHandler(async (req, res, next) => {
   })
     .skip(pageSize * page)
     .limit(pageSize)
-    .sort({ [req.query.sortBy || 'userName']: req.query.sortDir === 'asc' ? 1 : -1 });
+    .sort({ [req.query.sortBy || 'userName']: req.query.sortDir === 'asc' ? 1 : -1 })
+    .populate('transactions');
 
   const totalCount = await PlayerModel.countDocuments({
     $or: [{ userName: { $regex: searchRgx, $options: 'i' } }],
@@ -22,6 +23,18 @@ const getPlayers = expressAsyncHandler(async (req, res, next) => {
   return res.status(200).json({ message: 'OK', data: { players, totalCount } });
 });
 
+// @desc    Get plyaer
+// @route   GET /api/players/:playerId
+// @access  Private
+const getPlayer = expressAsyncHandler(async (req, res, next) => {
+  const player = await PlayerModel.findById(req.params.playerId).populate('transactions totalBetAmount totalWinAmount');
+  if (!player) {
+    throw new Error('notFound');
+  }
+  return res.status(200).json({ message: 'OK', data: player });
+});
+
 export default {
   getPlayers,
+  getPlayer,
 };

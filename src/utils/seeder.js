@@ -9,8 +9,6 @@ dotenv.config();
 export function createRandomUser() {
   return {
     userName: faker.internet.userName(),
-    totalBet: 0,
-    totalWin: 0,
     level: faker.number.int({ min: 1, max: 5 }),
     lastVisitDate: faker.date.past(),
   };
@@ -21,6 +19,7 @@ export function createRandomTransaction(playerId) {
     type: faker.helpers.arrayElement(['income', 'outcome']),
     status: faker.helpers.arrayElement(['fulfilled', 'pending']),
     amount: faker.number.int({ min: 1, max: 2326598 }),
+    win: faker.number.int({ min: 1, max: 5000 }),
     playerId,
     transactionDate: faker.date.past(),
   };
@@ -34,7 +33,9 @@ mongoose
   .connect(process.env.MONGO_URI || '')
   .then(async () => {
     const data = await PlayerModel.insertMany(players);
-    const transactions = data.map((el) => createRandomTransaction(el._id));
+    const transactions = data
+      .map((el) => faker.helpers.multiple(() => createRandomTransaction(el._id), { count: faker.number.int({ min: 1, max: 30 }) }))
+      .flat();
     await TransactionModel.insertMany(transactions);
     console.log('Seeder succeed...');
     process.exit(1);

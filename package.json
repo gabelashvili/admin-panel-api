@@ -7,7 +7,8 @@
     "dev": "cross-env NODE_ENV=development nodemon --loader esm-module-alias/loader --no-warnings ./src/index.js",
     "start": "cross-env NODE_ENV=production node --loader esm-module-alias/loader --no-warnings ./src/index.js",
     "lint": "eslint ./src/**/*.js --fix",
-    "format": "prettier --write ./**/*.{js,json}"
+    "format": "prettier --write ./**/*.{js,json}",
+    "seed": "node src/utils/seeder.js"
   },
   "keywords": [],
   "author": "",
