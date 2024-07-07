@@ -30,8 +30,8 @@ const signIn = expressAsyncHandler(async (req, res, next) => {
 });
 
 // @desc    Get authed user
-// @route   POST /api/users
-// @access  Public
+// @route   GET /api/users/me
+// @access  Private
 const getAuthedUser = expressAsyncHandler(async (req, res, next) => {
   const user = req.authedUser;
   if (!user) {
@@ -39,6 +39,21 @@ const getAuthedUser = expressAsyncHandler(async (req, res, next) => {
   }
 
   return res.status(200).json({ data: { user }, message: 'OK' });
+});
+
+// @desc    Update authed user details
+// @route   POST /api/users/me
+// @access  Private
+const updateAuthedUser = expressAsyncHandler(async (req, res, next) => {
+  await UserModel.findByIdAndUpdate(
+    req.authedUser._id,
+    {
+      ...req.body,
+      ...(req.file && { avatar: req.file.filename }),
+    },
+    { runValidators: true },
+  );
+  return res.status(200).json({ data: null, message: 'OK' });
 });
 
 // @desc    Refresh user token
@@ -76,4 +91,5 @@ export default {
   refreshToken,
   ping,
   getAuthedUser,
+  updateAuthedUser,
 };
