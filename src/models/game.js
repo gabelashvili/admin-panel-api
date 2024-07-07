@@ -6,7 +6,7 @@ const GameSchema = new mongoose.Schema(
       type: String,
       trim: true,
       required: true,
-      min: 5,
+      min: 1,
       unique: true,
     },
     image: {

@@ -22,5 +22,7 @@ const upload = multer({
 const router = express.Router();
 
 router.post('/', upload, checkAuth, GameValidations.addGame, GameController.addGame);
+router.post('/:gameId', upload, checkAuth, GameController.updateGame);
+router.get('/', checkAuth, GameController.getGames);
 
 export default router;
