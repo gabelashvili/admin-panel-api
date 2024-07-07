@@ -34,7 +34,19 @@ const getPlayer = expressAsyncHandler(async (req, res, next) => {
   return res.status(200).json({ message: 'OK', data: player });
 });
 
+// @desc    Block player
+// @route   PUT /api/players/block/:playerId
+// @access  Private
+const blockPlayer = expressAsyncHandler(async (req, res, next) => {
+  const player = await PlayerModel.findByIdAndUpdate(req.params.playerId, { blocked: true });
+  if (!player) {
+    throw new Error('notFound');
+  }
+  return res.status(200).json({ message: 'OK', data: null });
+});
+
 export default {
   getPlayers,
   getPlayer,
+  blockPlayer,
 };

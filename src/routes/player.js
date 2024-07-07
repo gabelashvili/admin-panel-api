@@ -6,5 +6,6 @@ const router = express.Router();
 
 router.get('/', checkAuth, PlayerController.getPlayers);
 router.get('/:playerId', checkAuth, PlayerController.getPlayer);
+router.put('/block/:playerId', checkAuth, PlayerController.blockPlayer);
 
 export default router;
